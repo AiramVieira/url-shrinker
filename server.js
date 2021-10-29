@@ -1,11 +1,16 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 const ShortUrl = require('./models/shortUrl');
 const app = express();
+const uri =
+  'mongodb+srv://Airam:ptktyhErx6AzorZa@cluster0.tlx4i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
-mongoose.connect('mongodb://localhost/urlShortener', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
 });
 
 app.set('view engine', 'ejs');
