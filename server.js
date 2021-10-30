@@ -2,8 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
 const app = express();
-const uri =
-  'mongodb+srv://Airam:FMjtzBkaVHOJtgBq@cluster0.tlx4i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://Airam:FMjtzBkaVHOJtgBq@cluster0.tlx4i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -13,7 +12,6 @@ mongoose.connect(uri, {
 .catch(err => console.log(err));
 
 app.set('view engine', 'ejs');
-
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', async (req, res) => {
