@@ -16,18 +16,18 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-  const shortUrls = ShortUrl.find();
+app.get('/', async (req, res) => {
+  const shortUrls = await ShortUrl.find();
   res.render('index', { shortUrls: shortUrls });
 });
 
-app.post('/shortUrls', (req, res) => {
-  ShortUrl.create({ full: req.body.fullUrl });
+app.post('/shortUrls', async (req, res) => {
+  await ShortUrl.create({ full: req.body.fullUrl });
   res.redirect('/');
 });
 
-app.get('/:shortUrl', (req, res) => {
-  const shortUrl = ShortUrl.findOne({ short: req.params.shortUrl });
+app.get('/:shortUrl', async (req, res) => {
+  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
 
   if (shortUrl == null) return res.sendStatus(404);
 
