@@ -30,7 +30,7 @@ app.get('/registred/urls', async (req, res) => {
     return { fullUrl: r.full, shortUrl: r.short };
   });
   res.status(200);
-  res.send(shortUrls);
+  res.send(response);
 });
 
 // Create in DB one object with the short url by API
