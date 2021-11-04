@@ -41,8 +41,11 @@ app.get('/registered/urls', async (req, res) => {
 
 // Create in DB one object with the short url by API
 app.post('/shortify', async (req, res) => {
-  const body = req.body;
+  let body = req.body;
   if (body.url) {
+    if (!body.url.startsWith('https://')) {
+      body = `https://${body}`;
+    }
     await ShortUrl.create({ full: body.url });
     let url_info = await ShortUrl.findOne({ full: body.url });
 
