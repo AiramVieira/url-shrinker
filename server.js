@@ -47,9 +47,18 @@ app.post('/shortify', async (req, res) => {
 });
 
 // Return the info from URL
-app.get('/url=:fullUrl', (req, res) => {
+app.post('/url_info', async (req, res) => {
+  let url_info = await ShortUrl.findOne({ full: req.body.fullUrl });
+
+  if (url_info == null) return res.sendStatus(404);
+
+  url_info = {
+    full: url_info.full,
+    short: url_info.short
+  }
+
   res.status(200);
-  res.send({ fullUrl: req.params.fullUrl, custom: req.params.custom });
+  res.send(url_info);
 });
 
 // Create in DB one object with the short url by interface
