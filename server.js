@@ -24,7 +24,7 @@ app.get('/', async (req, res) => {
 });
 
 // Return all registrated URLs
-app.get('/registred/urls', async (req, res) => {
+app.get('/registered/urls', async (req, res) => {
   const shortUrls = await ShortUrl.find();
   const response = shortUrls.map((r) => {
     return { fullUrl: r.full, shortUrl: r.short };
@@ -40,7 +40,6 @@ app.post('/shortify', async (req, res) => {
     await ShortUrl.create({ full: body.url });
     res.status(200);
     res.send('Url Created');
-    // res.json(body);
   } else {
     res.status(500);
     res.send('Url not defined');
