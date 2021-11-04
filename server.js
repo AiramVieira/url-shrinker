@@ -47,18 +47,17 @@ app.post('/shortify', async (req, res) => {
       body.url = `https://${body.url}`;
     }
 
-    await ShortUrl.create({ full: body.url });
-    let url_info = await ShortUrl.findOne({ full: body.url });
+    await ShortUrl.create({ full: body.url }).then((result) => {
+      if (result == null) return res.sendStatus(404);
 
-    if (url_info == null) return res.sendStatus(404);
+      result = {
+        full: result.full,
+        short: result.short,
+      };
 
-    url_info = {
-      full: url_info.full,
-      short: url_info.short,
-    };
-
-    res.status(200);
-    res.send(url_info);
+      res.status(200);
+      res.send(result);
+    });
   } else {
     res.status(500);
     res.send('Url not defined');
