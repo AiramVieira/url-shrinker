@@ -23,6 +23,12 @@ app.get('/', async (req, res) => {
   res.render('index', { shortUrls: shortUrls });
 });
 
+// Create in DB one object with the short url by interface
+app.post('/shortUrls', async (req, res) => {
+  await ShortUrl.create({ full: req.body.fullUrl });
+  res.redirect('/');
+});
+
 // Return all registrated URLs
 app.get('/registered/urls', async (req, res) => {
   const shortUrls = await ShortUrl.find();
@@ -38,8 +44,17 @@ app.post('/shortify', async (req, res) => {
   const body = req.body;
   if (body.url) {
     await ShortUrl.create({ full: body.url });
+    let url_info = await ShortUrl.findOne({ full: body.url });
+
+    if (url_info == null) return res.sendStatus(404);
+
+    url_info = {
+      full: url_info.full,
+      short: url_info.short,
+    };
+
     res.status(200);
-    res.send('Url Created');
+    res.send(url_info);
   } else {
     res.status(500);
     res.send('Url not defined');
@@ -48,23 +63,17 @@ app.post('/shortify', async (req, res) => {
 
 // Return the info from URL
 app.post('/url_info', async (req, res) => {
-  let url_info = await ShortUrl.findOne({ full: req.body.fullUrl });
+  let url_info = await ShortUrl.findOne({ full: req.body.url });
 
   if (url_info == null) return res.sendStatus(404);
 
   url_info = {
     full: url_info.full,
-    short: url_info.short
-  }
+    short: url_info.short,
+  };
 
   res.status(200);
   res.send(url_info);
-});
-
-// Create in DB one object with the short url by interface
-app.post('/shortUrls', async (req, res) => {
-  await ShortUrl.create({ full: req.body.fullUrl });
-  res.redirect('/');
 });
 
 // Redirect to original URL
