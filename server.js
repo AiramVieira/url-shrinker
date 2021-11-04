@@ -44,8 +44,9 @@ app.post('/shortify', async (req, res) => {
   let body = req.body;
   if (body.url) {
     if (!body.url.startsWith('https://')) {
-      body = `https://${body}`;
+      body.url = `https://${body.url}`;
     }
+
     await ShortUrl.create({ full: body.url });
     let url_info = await ShortUrl.findOne({ full: body.url });
 
