@@ -1,4 +1,5 @@
 require('dotenv').config();
+const axios = require('axios');
 const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
@@ -88,6 +89,31 @@ app.get('/:shortUrl', async (req, res) => {
   shortUrl.save();
 
   res.redirect(shortUrl.full);
+});
+
+// Redirect to original URL
+app.get('/:shortUrl/:chatContactId', async (req, res) => {
+  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
+
+  if (shortUrl == null) return res.sendStatus(404);
+
+  const send = () => {
+    shortUrl.save();
+
+    res.redirect(shortUrl.full);
+  };
+
+  if (req.params.chatContactId) {
+    try {
+      const url = `${process.env.COMUNICATION_API}/services/chats/notify/${req.params.chatContactId}`;
+      const response = await axios.get(url);
+      send();
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    send();
+  }
 });
 
 app.listen(process.env.PORT || 5000);
