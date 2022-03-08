@@ -20,8 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Registration with interface
 app.get('/', async (req, res) => {
-  const shortUrls = await ShortUrl.find();
-  res.render('index', { shortUrls: shortUrls });
+  // const shortUrls = await ShortUrl.find();
+  res.render('<h1>404 - Página não encontrada</h1>');
 });
 
 // Create in DB one object with the short url by interface
