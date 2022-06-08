@@ -22,6 +22,7 @@ app.get('/', async (req, res) => {
   const shortUrls = await ShortUrl.find().limit(10);
   console.log(shortUrls)
   res.render('index', {shortUrls});
+  res.send(shortUrls);
 });
 
 // Create in DB one object with the short url by interface
