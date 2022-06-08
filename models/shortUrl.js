@@ -10,6 +10,11 @@ const shortUrlSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: shortId.generate,
+  },
+  created_at: {
+    type: Number,
+    required: true,
+    default: new Date()
   }
 });
 
