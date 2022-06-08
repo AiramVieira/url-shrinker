@@ -19,10 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Registration with interface
 app.get('/', async (req, res) => {
-  const shortUrls = await ShortUrl.find().limit(10);
-  console.log(shortUrls)
+  const shortUrls = await ShortUrl.find().limit(5);
   res.render('index', {shortUrls});
-  res.send(shortUrls);
 });
 
 // Create in DB one object with the short url by interface
