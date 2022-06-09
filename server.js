@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Registration with interface
 app.get('/', async (req, res) => {
-  const shortUrls = await ShortUrl.find().limit(5);
+  const shortUrls = await ShortUrl.find().sort({ created_at: -1 }).limit(5);
   res.render('index', {shortUrls});
 });
 
