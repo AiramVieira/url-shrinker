@@ -23,6 +23,27 @@ app.get('/', async (req, res) => {
   res.render('index', {shortUrls});
 });
 
+// Get specific amount of response
+app.get('/amount/:amount', async (req, res) => {
+  const amount = req.params.amount;
+
+  if (isNaN(+amount)){
+    res.status(500);
+    res.send("Amount must be a number");
+  } else {
+    if (amount > 25) {
+      res.status(500);
+      res.send("Abled only 25 responses at one");
+    } else if (amount <= 0) {
+      res.status(500);
+      res.send("Amount must be greater than 0");
+    }
+    const shortUrls = await ShortUrl.find().sort({ created_at: -1 }).limit(+amount);
+    res.status(200);
+    res.send(shortUrls);
+  }
+});
+
 // Create in DB one object with the short url by interface
 app.post('/shortUrls', async (req, res) => {
   await ShortUrl.create({ full: req.body.fullUrl });
@@ -31,7 +52,7 @@ app.post('/shortUrls', async (req, res) => {
 
 // Return all registrated URLs
 app.get('/registered/urls', async (req, res) => {
-  const shortUrls = await ShortUrl.find();
+  const shortUrls = await ShortUrl.find().limit(2);
   const response = shortUrls.map((r) => {
     return { fullUrl: r.full, shortUrl: r.short };
   });
