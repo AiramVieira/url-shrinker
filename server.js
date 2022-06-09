@@ -1,5 +1,4 @@
 require('dotenv').config();
-const axios = require('axios');
 const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
@@ -20,8 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Registration with interface
 app.get('/', async (req, res) => {
-  // const shortUrls = await ShortUrl.find();
-  res.render('<h1>404 - Página não encontrada</h1>');
+  const shortUrls = await ShortUrl.find().sort({ created_at: -1 }).limit(5);
+  res.render('index', {shortUrls});
 });
 
 // Create in DB one object with the short url by interface
